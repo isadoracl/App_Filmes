@@ -1,0 +1,47 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Atualizar{
+
+  public static void AtualizarCatalogo() {
+          Scanner scanner = new Scanner(System.in);
+          System.out.println("\n");
+          System.out.println("Digite o número da linha que deseja atualizar");
+          int linha = scanner.nextInt();
+          System.out.println("Digite o nome do novo filme:");
+          String novoFilme = scanner.next();
+
+          try {
+              File catalogoFile = new File("catalogo.txt");
+              Scanner catalogoScanner = new Scanner(catalogoFile);
+
+              String[] catalogo = new String[100];
+              int linhaAtual = 0;
+              while (catalogoScanner.hasNextLine()) {
+                  catalogo[linhaAtual] = catalogoScanner.nextLine();
+                  linhaAtual++;
+              }
+              catalogoScanner.close();
+
+              if (linha >= 1 && linha <= linhaAtual) {
+                  catalogo[linha - 1] = novoFilme;
+              } else {
+                  System.out.println("Linha selecionada não existe no catálogo.");
+                  return;
+              }
+
+              FileWriter writer = new FileWriter(catalogoFile);
+              for (int i = 0; i < linhaAtual; i++) {
+                  writer.write(catalogo[i] + "\n");
+              }
+              writer.close();
+
+              System.out.println("Filme substituído no catálogo!");
+          } catch (IOException e) {
+              System.out.println("Ocorreu um erro ao substituir o filme no catálogo.");
+              e.printStackTrace();
+          }
+      }
+  }
